@@ -1,0 +1,13 @@
+# IDE Configuration files
+.idea
+.vscode
+
+# Python Environment
+*.py[dcw]
+__pycache__
+venv
+pyvenv
+Pipfile.lock
+
+# Bot Secrets
+.env
