@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 def guild_command(**kwargs):
-    return command(**kwargs, guild=GUILD)
+    return command(**kwargs, guild=GUILD_ID)
 
 
 class Bot(Client):
