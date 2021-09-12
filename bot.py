@@ -19,10 +19,6 @@ pypi_download_url = (
 )
 
 
-def guild_command(**kwargs):
-    return command(**kwargs, guild=GUILD_ID)
-
-
 class Bot(Client):
 
     def __init__(self) -> None:
@@ -34,7 +30,7 @@ class Bot(Client):
     async def on_ready(self) -> None:
         logging.info(f"Logged in as {self.bot} after {perf_counter()} seconds.")
 
-    @guild_command()
+    @command(guild=GUILD_ID)
     async def about(self) -> Embed:
         return Embed(
             title="Pincer - 0.6.4",
@@ -71,10 +67,12 @@ class Bot(Client):
             )
         )
 
-    @guild_command()
+    @command()
     async def pypi_dl(self):
         res = requests.get(pypi_download_url)
-        return re.findall(dl_pattern, res.content.decode())[0]
+        downloads = re.findall(dl_pattern, res.content.decode())[0]
+        amount = downloads.split(' ')[1]
+        return f"> `{amount}` *Updates every days*"
 
 
 def main() -> None:
