@@ -1,12 +1,9 @@
-import dotenv
 import logging
-import random
 from time import perf_counter
 
+import dotenv
 from pincer import Client, command
-from pincer.objects import Message, Embed, InteractionFlags
-from pincer.objects.embed import EmbedThumbnail, EmbedImage
-from pincer.objects.button import ButtonStyle
+from pincer.objects import Embed
 
 GUILD_ID = 881531065859190804
 logging.basicConfig(level=logging.DEBUG)
