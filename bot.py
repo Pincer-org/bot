@@ -1,12 +1,22 @@
+import re
 import logging
 from time import perf_counter
 
 import dotenv
+import requests
 from pincer import Client, command
 from pincer.objects import Embed
 
 GUILD_ID = 881531065859190804
 logging.basicConfig(level=logging.DEBUG)
+
+dl_pattern = re.compile(r'downloads: \d*')
+
+pypi_download_url = (
+    "https://img.shields.io/badge/dynamic/json?"
+    "label=downloads&query=%24.total_downloads"
+    "&url=https%3A%2F%2Fapi.pepy.tech%2Fapi%2Fprojects%2FPincer"
+)
 
 
 def guild_command(**kwargs):
@@ -60,6 +70,11 @@ class Bot(Client):
                 "/400871418/045ebf39-7c6e-4c3a-b744-0c3122374203"
             )
         )
+
+    @guild_command()
+    async def pypi_dl(self):
+        res = requests.get(pypi_download_url)
+        return re.findall(dl_pattern, res.content.decode())[0]
 
 
 def main() -> None:

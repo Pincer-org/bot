@@ -1,2 +1,3 @@
 python-dotenv~=0.19.0
-Pincer
+Pincer~=0.6.6
+requests~=2.26.0
