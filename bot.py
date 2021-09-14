@@ -1,11 +1,12 @@
-import re
 import logging
+import re
 from time import perf_counter
 
 import dotenv
 import requests
 from pincer import Client, command
-from pincer.objects import Embed
+from pincer.commands import ChatCommandHandler
+from pincer.objects import Embed, Message, InteractionFlags
 
 GUILD_ID = 881531065859190804
 logging.basicConfig(level=logging.DEBUG)
@@ -30,7 +31,7 @@ class Bot(Client):
     async def on_ready(self) -> None:
         logging.info(f"Logged in as {self.bot} after {perf_counter()} seconds.")
 
-    @command(guild=GUILD_ID)
+    @command(guild=GUILD_ID, description="Embed example command")
     async def about(self) -> Embed:
         return Embed(
             title="Pincer - 0.6.4",
@@ -67,12 +68,22 @@ class Bot(Client):
             )
         )
 
-    @command()
+    @command(description="Number of PyPI downloads")
     async def pypi_dl(self):
         res = requests.get(pypi_download_url)
         downloads = re.findall(dl_pattern, res.content.decode())[0]
         amount = downloads.split(' ')[1]
         return f"> `{amount}` *Updates every days*"
+
+    @command(description="An help command")
+    async def help(self):
+        return Message(
+            content='>>> ' + '\n'.join(
+                f"`{cmd_name.capitalize()}` - {cmd_obj.app.description}"
+                for cmd_name, cmd_obj in ChatCommandHandler.register.items()
+            ),
+            flags=InteractionFlags.EPHEMERAL
+        )
 
 
 def main() -> None:
