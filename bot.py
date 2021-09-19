@@ -1,4 +1,5 @@
 import logging
+import random
 import re
 from time import perf_counter
 
@@ -84,6 +85,31 @@ class Bot(Client):
             ),
             flags=InteractionFlags.EPHEMERAL
         )
+
+    @command()
+    async def lottery(self, numbers: int, guess: int):
+        if numbers < 1:
+            yield 'Please try again with 2 or more numbers'
+            return
+
+        elif numbers > 100:
+            yield 'Please try again with 100 or less numbers'
+            return
+
+        yield f'Your {numbers} lucky numbers for today are:'
+
+        has_won = False
+        for _ in range(numbers):
+            num = random.randint(0, 100)
+            yield f'{num}'
+            if num == guess:
+                has_won = True
+
+        if has_won:
+            yield f'Congratulations! {guess} was a winning number.'
+
+        else:
+            yield f'You tried your best'
 
 
 def main() -> None:
