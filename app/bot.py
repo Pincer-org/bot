@@ -7,21 +7,24 @@ from pincer import Client, command
 from app.commands import commands
 
 GUILD_ID = 881531065859190804
+TEST_GUILD_ID = 813915317867642910
 
 
 class Bot(Client):
 
     def __init__(self):
+        for cmd in commands:
+            self.__setattr__(
+                cmd.__name__,
+                command(
+                    name=cmd.__name__,
+                    description=cmd.__doc__ or "Description not set",
+                    guild=TEST_GUILD_ID
+                )(cmd)
+            )
+
         dotenv.load_dotenv('.env')
         super().__init__(token=os.environ.get('TOKEN'))
-
-        for c, cmd in enumerate(commands):
-            command(
-                name=cmd.__name__.removesuffix('_command'),
-                description=cmd.__doc__ or "Description not set",
-                guild=GUILD_ID if not c else None,
-            )(cmd)
-
         self.start_time = perf_counter()
 
     @Client.event

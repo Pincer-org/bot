@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 
 cwd = os.getcwd()
 
@@ -8,7 +8,7 @@ from app.bot import Bot
 
 def main() -> None:
     os.chdir(cwd)
-    logging.getLogger(__name__).setLevel(logging.DEBUG)
+    logging.basicConfig(level=logging.DEBUG)
     Bot().run()
 
 
