@@ -1,3 +1,4 @@
+import logging
 import os
 from time import perf_counter
 
@@ -7,6 +8,7 @@ from pincer import Client, command
 from app.commands import commands
 
 GUILD_ID = 881531065859190804
+TEST_GUILD_ID = 813915317867642910
 
 
 class Bot(Client):
@@ -15,12 +17,16 @@ class Bot(Client):
         dotenv.load_dotenv('.env')
         super().__init__(token=os.environ.get('TOKEN'))
 
-        for c, cmd in enumerate(commands):
+        for cmd in commands:
+            cmd_name = cmd.__name__.removesuffix('_command')
+
             command(
-                name=cmd.__name__.removesuffix('_command'),
+                name=cmd_name,
                 description=cmd.__doc__ or "Description not set",
-                guild=GUILD_ID if not c else None,
+                guild=TEST_GUILD_ID,
             )(cmd)
+
+            print("Adding command", cmd_name)
 
         self.start_time = perf_counter()
 

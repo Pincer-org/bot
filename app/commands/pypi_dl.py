@@ -10,7 +10,7 @@ PYPI_DOWNLOAD_URL = (
 )
 
 
-async def pypi_dl(self):
+async def pypi_dl_command():
     res = requests.get(PYPI_DOWNLOAD_URL)
     downloads = re.findall(DL_PATTERN, res.content.decode())[0]
     amount = downloads.split(' ')[1]
