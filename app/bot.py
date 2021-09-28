@@ -14,10 +14,14 @@ class Bot(Client):
 
     def __init__(self):
         for cmd in commands:
+            command_name = cmd.__name__.lower()
+            if command_name.endswith('_command'):
+                command_name = command_name[:-8]
+
             self.__setattr__(
-                cmd.__name__,
+                command_name,
                 command(
-                    name=cmd.__name__,
+                    name=command_name,
                     description=cmd.__doc__ or "Description not set",
                     guild=TEST_GUILD_ID
                 )(cmd)
