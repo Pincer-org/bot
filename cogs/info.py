@@ -1,8 +1,9 @@
 import re
+
 import psutil
 import requests
 from pincer import __version__
-from pincer.commands import ChatCommandHandler
+from pincer.commands import ChatCommandHandler, command
 from pincer.objects import Embed, Message, InteractionFlags, MessageContext
 
 DL_PATTERN = re.compile(r'downloads: \d*')
@@ -14,10 +15,9 @@ PYPI_DOWNLOAD_URL = (
 
 
 class InfoCog:
-    ...
 
-    @staticmethod
-    async def about_command() -> Embed:
+    @command()
+    async def about_command(self) -> Embed:
         return Embed(
             title=f"Pincer - {__version__}",
             description=(
@@ -53,8 +53,8 @@ class InfoCog:
             )
         )
 
-    @staticmethod
-    async def help_command():
+    @command()
+    async def help_command(self):
         return Message(
             content='>>> ' + '\n'.join(
                 f"`{cmd_name.capitalize()}` - {cmd_obj.app.description}"
@@ -63,15 +63,15 @@ class InfoCog:
             flags=InteractionFlags.EPHEMERAL
         )
 
-    @staticmethod
-    async def panel_command() -> Embed:
+    @command()
+    async def panel_command(self) -> Embed:
         """Panel status command."""
         mb: int = 1024 ** 2
 
         vm = psutil.virtual_memory()
         cpu_freq = psutil.cpu_freq()
         cpu_percent = psutil.cpu_percent()
-        disk = psutil.disk_usage('.')
+        disk = psutil.disk_usage('../app/cogs')
 
         stats = {
             'ram': (
@@ -101,19 +101,19 @@ class InfoCog:
             )
         )
 
-    @staticmethod
-    async def ping_command() -> str:
+    @command()
+    async def ping_command(self) -> str:
         return 'pong'
 
-    @staticmethod
-    async def pypi_dl_command():
+    @command()
+    async def pypi_dl_command(self):
         res = requests.get(PYPI_DOWNLOAD_URL)
         downloads = re.findall(DL_PATTERN, res.content.decode())[0]
         amount = downloads.split(' ')[1]
         return f"> `{amount}` *Updates every days*"
 
-    @staticmethod
-    async def say_command(ctx: MessageContext, message: str):
+    @command()
+    async def say_command(self, ctx: MessageContext, message: str):
         return Embed(description=f"{ctx.author.user.mention} said:\n{message}")
 
 

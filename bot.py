@@ -1,28 +1,26 @@
+import logging
 import os
+from glob import glob
 from time import perf_counter
 
 import dotenv
-from pincer import Client, command
-
-from .cogs.__init__ import start_config
-
-GUILD_ID = 881531065859190804
-TEST_GUILD_ID = 813915317867642910
+from pincer import Client
 
 
 class Bot(Client):
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         self.load_cogs()
 
         dotenv.load_dotenv('.env')
-        super().__init__(token=os.environ.get('TOKEN'))
+        super().__init__(token=os.environ.get('TOKEN'), *args, **kwargs)
         self.start_time = perf_counter()
 
     def load_cogs(self):
         """Load all cogs from the `cogs` directory."""
-        for cog_class in start_config:
-            self.load_cog(f"app.cogs.{flatten_name(cog_class)}")
+        for cog in glob("cogs/*.py"):
+            self.load_cog(cog.replace("/", ".").replace("\\", ".")[:-3])
+            print("Loaded cogs from", cog)
 
     @Client.event
     async def on_ready(self):
@@ -32,5 +30,6 @@ class Bot(Client):
         )
 
 
-def flatten_name(cog_name: str) -> str:
-    return cog_name.__name__.lower().lower().removesuffix('cog')
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    Bot().run()
