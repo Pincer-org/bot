@@ -16,7 +16,7 @@ PYPI_DOWNLOAD_URL = (
 
 class InfoCog:
 
-    @command()
+    @command(name='about')
     async def about_command(self) -> Embed:
         return Embed(
             title=f"Pincer - {__version__}",
@@ -53,7 +53,7 @@ class InfoCog:
             )
         )
 
-    @command()
+    @command(name="help")
     async def help_command(self):
         return Message(
             content='>>> ' + '\n'.join(
@@ -63,7 +63,7 @@ class InfoCog:
             flags=InteractionFlags.EPHEMERAL
         )
 
-    @command()
+    @command(name="panel")
     async def panel_command(self) -> Embed:
         """Panel status command."""
         mb: int = 1024 ** 2
@@ -101,18 +101,18 @@ class InfoCog:
             )
         )
 
-    @command()
+    @command(name="ping")
     async def ping_command(self) -> str:
         return 'pong'
 
-    @command()
+    @command(name="pypi_dl")
     async def pypi_dl_command(self):
         res = requests.get(PYPI_DOWNLOAD_URL)
         downloads = re.findall(DL_PATTERN, res.content.decode())[0]
         amount = downloads.split(' ')[1]
         return f"> `{amount}` *Updates every days*"
 
-    @command()
+    @command(name="say")
     async def say_command(self, ctx: MessageContext, message: str):
         return Embed(description=f"{ctx.author.user.mention} said:\n{message}")
 
