@@ -1,6 +1,6 @@
 import logging
 
-from app.bot import Bot
+from app import Bot
 
 
 def main() -> None:
