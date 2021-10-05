@@ -1,13 +1,9 @@
 import logging
-import os
-
-cwd = os.getcwd()
 
 from app.bot import Bot
 
 
 def main() -> None:
-    os.chdir(cwd)
     logging.basicConfig(level=logging.DEBUG)
     Bot().run()
 
