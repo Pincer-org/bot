@@ -1,0 +1,10 @@
+build:
+    environment:
+        python:
+            version: 3.8.6
+            virtualenv: true
+
+checks:
+    python:
+        code_rating: true
+        duplicate_code: true
