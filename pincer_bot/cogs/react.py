@@ -34,7 +34,7 @@ class React:
 
     @Client.event
     async def on_message(self, message: UserMessage):
-        if 'pincer' in message.content:
+        if 'pincer' in message.content.lower():
             await self.create_reaction(message, choice(PINCER_EMOTES))
 
 
