@@ -1,21 +1,24 @@
 import re
 
-import requests
 from pincer import __version__
-from pincer.commands import ChatCommandHandler, command
+from pincer.commands import ChatCommandHandler
 from pincer.objects import Embed, Message, InteractionFlags
+from pincer.utils import TaskScheduler
 
 from pincer_bot.core.command import guild_command
+from pincer_bot.tasks.get_pypi_downloads import get_pypi_stats
 
 DL_PATTERN = re.compile(r'downloads: \d*')
-PYPI_DOWNLOAD_URL = (
-    "https://img.shields.io/badge/dynamic/json?"
-    "label=downloads&query=%24.total_downloads"
-    "&url=https%3A%2F%2Fapi.pepy.tech%2Fapi%2Fprojects%2FPincer"
-)
 
 
 class InfoCog:
+
+    def __init__(self, client):
+        self.client = client
+
+        task = TaskScheduler(self.client)
+        self.get_pypi_downloads = task.loop(minutes=10)(get_pypi_stats)
+        self.get_pypi_downloads.start()
 
     @guild_command(name='about')
     async def about_command(self) -> Embed:
@@ -66,10 +69,28 @@ class InfoCog:
 
     @guild_command(name="pypi_dl")
     async def pypi_dl_command(self):
-        res = requests.get(PYPI_DOWNLOAD_URL)
-        downloads = re.findall(DL_PATTERN, res.content.decode())[0]
-        amount = downloads.split(' ')[1]
-        return f"> `{amount}` *Updates every days*"
+        height = 15
+        pypi = self.client.pypi
+
+        lines = [
+            (round((n / pypi.daily_max) * height) * '█').rjust(height, '░')
+            for n in self.client.pypi.downloads.values()
+        ]
+
+        rotated = '\n'.join(
+            ''.join(line) for line in zip(*lines)
+        )
+
+        return Embed(
+            title="PyPI stats",
+            description=(
+                f"Totals downloads: `{self.client.pypi.total_downloads:,}`\n"
+                f"Daily average: `{self.client.pypi.daily_average:,.0f}`"
+            )
+        ).add_field(
+            name="graph",
+            value=f'```py\n{rotated}\n```'
+        )
 
 
 setup = InfoCog

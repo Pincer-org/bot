@@ -4,6 +4,7 @@ from time import perf_counter
 
 import dotenv
 from pincer import Client
+from pincer_bot.classes.pypi import PyPI
 
 
 class Bot(Client):
@@ -13,6 +14,8 @@ class Bot(Client):
 
         dotenv.load_dotenv('.env')
         super().__init__(token=os.environ.get('TOKEN'), *args, **kwargs)
+
+        self.pypi = PyPI()
         self.start_time = perf_counter()
 
     def load_cogs(self):
