@@ -1,4 +1,3 @@
-import logging
 import os
 from glob import glob
 from time import perf_counter
@@ -18,7 +17,7 @@ class Bot(Client):
 
     def load_cogs(self):
         """Load all cogs from the `cogs` directory."""
-        for cog in glob("cogs/*.py"):
+        for cog in glob("pincer_bot/cogs/*.py"):
             self.load_cog(cog.replace("/", ".").replace("\\", ".")[:-3])
             print("Loaded cogs from", cog)
 
@@ -28,8 +27,3 @@ class Bot(Client):
             f"Logged in as {self.bot} "
             f"after {perf_counter() - self.start_time:.3f} seconds."
         )
-
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
-    Bot().run()

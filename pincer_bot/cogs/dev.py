@@ -43,7 +43,7 @@ class DevCog:
 
         return Embed(
             title="Panel Stats",
-            description="The bot is hosted on a private vps."
+            description="The pincer_bot is hosted on a private vps."
         ).add_fields(
             stats.items(),
             map_title=lambda name: name.upper(),

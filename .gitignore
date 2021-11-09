@@ -14,3 +14,6 @@ Pipfile.lock
 
 # Zip send to the server
 *.zip
+
+# Packaging
+*.egg-info
