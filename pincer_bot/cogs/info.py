@@ -1,10 +1,9 @@
 import re
 
-import psutil
 import requests
 from pincer import __version__
 from pincer.commands import ChatCommandHandler, command
-from pincer.objects import Embed, Message, InteractionFlags, MessageContext
+from pincer.objects import Embed, Message, InteractionFlags
 
 DL_PATTERN = re.compile(r'downloads: \d*')
 PYPI_DOWNLOAD_URL = (
