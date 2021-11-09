@@ -3,6 +3,8 @@ import re
 from pincer.commands import command
 from pincer.objects import Embed, MessageContext
 
+from pincer_bot.core.command import guild_command
+
 DL_PATTERN = re.compile(r'downloads: \d*')
 PYPI_DOWNLOAD_URL = (
     "https://img.shields.io/badge/dynamic/json?"
@@ -13,11 +15,11 @@ PYPI_DOWNLOAD_URL = (
 
 class FunCog:
 
-    @command(name="say")
+    @guild_command(name="say")
     async def say_command(self, ctx: MessageContext, message: str):
         return Embed(description=f"{ctx.author.user.mention} said:\n{message}")
 
-    @command(name="ping")
+    @guild_command(name="ping")
     async def ping_command(self) -> str:
         return 'pong'
 

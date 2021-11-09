@@ -5,6 +5,8 @@ from pincer import __version__
 from pincer.commands import ChatCommandHandler, command
 from pincer.objects import Embed, Message, InteractionFlags
 
+from pincer_bot.core.command import guild_command
+
 DL_PATTERN = re.compile(r'downloads: \d*')
 PYPI_DOWNLOAD_URL = (
     "https://img.shields.io/badge/dynamic/json?"
@@ -15,7 +17,7 @@ PYPI_DOWNLOAD_URL = (
 
 class InfoCog:
 
-    @command(name='about')
+    @guild_command(name='about')
     async def about_command(self) -> Embed:
         return Embed(
             title=f"Pincer - {__version__}",
@@ -52,7 +54,7 @@ class InfoCog:
             )
         )
 
-    @command(name="help")
+    @guild_command(name="help")
     async def help_command(self):
         return Message(
             content='>>> ' + '\n'.join(
@@ -62,7 +64,7 @@ class InfoCog:
             flags=InteractionFlags.EPHEMERAL
         )
 
-    @command(name="pypi_dl")
+    @guild_command(name="pypi_dl")
     async def pypi_dl_command(self):
         res = requests.get(PYPI_DOWNLOAD_URL)
         downloads = re.findall(DL_PATTERN, res.content.decode())[0]

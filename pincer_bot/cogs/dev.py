@@ -1,8 +1,9 @@
 import re
 
 import psutil
-from pincer.commands import command
 from pincer.objects import Embed
+
+from pincer_bot.core.command import guild_command
 
 DL_PATTERN = re.compile(r'downloads: \d*')
 PYPI_DOWNLOAD_URL = (
@@ -14,7 +15,7 @@ PYPI_DOWNLOAD_URL = (
 
 class DevCog:
 
-    @command(name="panel")
+    @guild_command(name="panel")
     async def panel_command(self) -> Embed:
         """Panel status command."""
         mb: int = 1024 ** 2
