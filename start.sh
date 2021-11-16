@@ -7,4 +7,7 @@ python -m pip install --upgrade pip
 pip install --upgrade -r requirements.txt
 pip install -e .
 
-python -m pincer_bot
+while:
+do
+    python -m pincer_bot
+done
