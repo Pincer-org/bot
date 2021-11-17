@@ -15,7 +15,8 @@ PINCER_EMOTES = (
     "pincer_pink:905204650335162378",
     "pincer_purple:905207327710392330",
     "pincer:881987938303488031",
-    "pincer_red:905206299795538032"
+    "pincer_red:905206299795538032",
+    "pincer_cyan:910625755241779261"
 )
 
 
