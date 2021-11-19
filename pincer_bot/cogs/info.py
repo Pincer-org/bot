@@ -78,7 +78,7 @@ class InfoCog:
         ]
 
         rotated = '\n'.join(
-            ''.join(line) for line in zip(*lines)
+            ''.join(line)[::-1] for line in zip(*lines)
         )
 
         return Embed(
