@@ -25,18 +25,11 @@ class React:
     def __init__(self, client: Client) -> None:
         self.client = client
 
-    @staticmethod
-    async def create_reaction(message: UserMessage, reaction: str):
-        await message._http.put(
-            f"/channels/{message.channel_id}/messages/{message.id}/reactions/"
-            f"{reaction}/@me",
-            None
-        )
-
     @Client.event
     async def on_message(self, message: UserMessage):
         if 'pincer' in message.content.lower():
-            await self.create_reaction(message, choice(PINCER_EMOTES))
+            await message.react(choice(PINCER_EMOTES))
+
 
 
 setup = React
