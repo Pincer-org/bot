@@ -1,4 +1,4 @@
 python-dotenv~=0.19.2
-pincer~=0.13.0
+pincer~=0.14.0
 requests~=2.26.0
 psutil~=5.8.0
