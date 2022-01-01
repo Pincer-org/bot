@@ -7,7 +7,7 @@ class FunCog:
 
     @guild_command(name="say")
     async def say_command(self, ctx: MessageContext, message: str):
-        return Embed(description=f"{ctx.author.user.mention} said:\n{message}")
+        return Embed(description=f"{ctx.author.mention} said:\n{message}")
 
     @guild_command(name="ping")
     async def ping_command(self) -> str:

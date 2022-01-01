@@ -14,7 +14,7 @@ class DevCog:
         vm = psutil.virtual_memory()
         cpu_freq = psutil.cpu_freq()
         cpu_percent = psutil.cpu_percent()
-        disk = psutil.disk_usage('../app/cogs')
+        disk = psutil.disk_usage('pincer_bot/cogs')
 
         stats = {
             'ram': (
