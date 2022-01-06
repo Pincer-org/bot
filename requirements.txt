@@ -1,4 +1,4 @@
 python-dotenv~=0.19.2
 pincer~=0.15.0
-requests~=2.27.0
+requests~=2.27.1
 psutil~=5.9.0
