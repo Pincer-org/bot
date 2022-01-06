@@ -1,8 +1,10 @@
 import re
+import requests
 
+from pincer import Client
 from pincer import __version__
 from pincer.commands import ChatCommandHandler
-from pincer.objects import Embed, Message, InteractionFlags
+from pincer.objects import Embed, Message, InteractionFlags, UserMessage
 from pincer.utils import TaskScheduler
 
 from pincer_bot.core.command import guild_command
@@ -91,6 +93,36 @@ class InfoCog:
             name="graph",
             value=f'```py\n{rotated}\n```'
         )
+
+    @Client.event
+    async def on_message(self, message: UserMessage):
+        if "##" not in message.content:
+            return
+
+        _, r = message.content.split("##")
+
+        if not (d := r.split('\n')[0]).isdigit():
+            return
+
+        url = f"https://github.com/Pincer-org/Pincer/issues/{d}"
+        r = requests.get(url)
+
+        if not r.ok:
+            return
+
+        content = r.content.split(b'markdown-title">')[1]
+        content = content.split(b'</span>')[0]
+        content = content.replace(b'<code>', b'`')
+        content = content.replace(b'</code>', b'`')
+
+        content = re.sub(
+            r'<g-emoji.*alias="(\w+)".*</g-emoji>',
+            r':\1:',
+            content.decode('utf-8')
+        )
+
+        c = await self.client.get_channel(message.channel_id)
+        await c.send(Embed(description=f"[{content}]({url})"))
 
 
 setup = InfoCog
