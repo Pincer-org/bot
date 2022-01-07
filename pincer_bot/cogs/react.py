@@ -31,5 +31,4 @@ class React:
             await message.react(choice(PINCER_EMOTES))
 
 
-
 setup = React
